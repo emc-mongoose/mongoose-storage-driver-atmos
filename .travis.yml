@@ -1,0 +1,39 @@
+language: java
+sudo: required
+addons:
+  ulimit:
+    nofile: 1048576
+before_install:
+- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+- sudo apt-get update
+- sudo apt-get -y install docker-ce
+script: "./gradlew clean test jar"
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: NJaDjCh1m7ziujU1VYG6Folx//13Rhon/F6sObzyT8VHjPenaHifdgs27fjKmKDqxiXy7qyT7mHBDYEvjjS5PIHw27nRBojWAw0zfzCi8sryhyYph8eVxcHxHOiN4ieNaoJo/T1a/HEko0gmBCWS3zsLUlCxmYJsVvek04kck7AXXari5h4WT+LcJq+4XvbKWD/TybD7Il/53fO8aje1RFsASZXoQKaKru7nIl2HaOk/bO96bOKXfMPyeuqD78/i7UhoHUov0R6rwQCPS8x0nH/k8usVuUfqXaIptuLLrnKxj163tkgFTTyDvWBvI/mwaNmF12WbNph6zx8KbPo4FcanlgP1HevKPp+wK+gnWQPwpZBdO8IYXbiOX7bd4pGES+Jh71z0Frkz2Vumbr1fL/3x6sG8K/4ygTsF2bkd4mvVDen71ID5dcn3+jBP6GupY/cJ9oZnlq7juAjDei0q2UyOFMC0uHV08tCPJXG9t4P7gLE2NZJhVwA39YLt6rus+rcOSrGGEmM7nK83h6weBEqWPLqXdI9s/RwXrr0Ci1keFztY/aCtYg/uLylE/qizmfUM8NrVSNgDBWFogD1HXyXKt7/dXuHLtv9MF+0arj17WwCujIXPicZ+BJw9KNBwwRFHvgnZxI9bKfPWYToJ/TDsePjzxQFTZ/Y1/uaJfb0=
+  file: "./build/libs/mongoose-storage-driver-atmos.jar"
+  on:
+    tags: true
+env:
+  global:
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - secure: "G1Lr2iMXa4pQTU+Q8wNiEUgsiZYBxGbfq08i2iLNStY2I18YyTEVjOBzosQgLUr006xPGYrhpLeBL4MYLXlQBq2ujjZ7q2CBkSb+IluKuw3lKE2AaX0Y2huVPJsWVKyxlATMbY86/H12UpCAt70kRjzQ++yF9cEl0gtT7uLXdPHJSTyTMWA690Dq94Ln4Wev7874nexl5OJHVR2saWI/vdloN7FZdrHDPi0EZSsbQ4GdttpJ9hMircXJ1sg4vAVy12cy1AsMnhn+ZSE8b7I27ehJllNpZLtUGNuXKrlftOIjsFCr2lZRJgFQoljYQSisrqLTMiqNtDGdHZ/3q775TC8EJslJ1XCIHp/nhoGOQ5OjnxtrqJK46/bN5WJ/0w7dvMinHONgEBq8IJdCJfufZwf4Bunew9ThuJRSybEX+muwkv50wnHVGVbLh/mWm395Xy+DguP1Strly5m9rzvNlLFB0L4SuUvbW8P8Xr995YfLu0SIAr4w5SflMsfIQ/zzcG0qHshBWchKHkU66uSZ3EOFBJpHycR7AoK1o8BwpvtPonkWe2Oz1AxX5DD51tlCNoq3xWJPZMKnSKTz1/L8QG6pRr5YNwYnfh8/1W5HNgXhTRHAPN1DZkBoe6hZUC0pM4XWxnho//GjzIwszWf1POTZA4Q1kLKhCVASI0QDY/U="
+  - secure: "DVS77BpSRRSt76bdTtBJAezwDUK4WZGjLvgpm1/Qgrahwuz6HfP3AbxClktN37dLVXcpu67xizu5mN0NR1tW22lgN1btsflVpYaub7YUErNCJS3J5glPB1YYXsv/686tuXo8BP0K7upKv6J8FNL68T4WtMOwnxr/TU5AFLxnZYeTDv0uoFgEOH1hjcxuOyUgviiIssuaQnX1ZeeIKpM4WipMDh8csz7O5K818EvRnDlo1LsxhPpuScs47kHXyLdyiDXSXQYGJTcZy5xtPqcv2zZ3sJ3ONp3BI5VJBIPR3RYoINU3irqhXw6NnndOjtap6l69gjGM4dGSlL9r48OPTdn/mLqtD/U4fO4vlkwOxuw1VNo4iH+iHnxWY13H202XiZ/zXnqB3ZRqiRyLOQnbXAl/i7v1fsTXn3rpa6VWcUHHyb/vZZGGkaqAleag9MIrby85DjUBSIPYRpZaLYThGATfEyQbAwHpgjHXuL0gWJsTzVxvJ8mRGKQVK4ilNPOZK+ESzAAq/ALZA+JHSbQbttZ3xQGLZ8QjkXA9cDBdxIXBa9sTfpFSK+eaesDpljjIrST7Gf15Y+N2QwHdD1cF2hJiRhj/9CPOrEGirqCKYVBQp5IcUvb5rhYrsI/2whlO0FsR4Zugks6VNSGltgq2Wu1oObC5WaNMgKmxe6jBYWM="
+after_success:
+- echo $DOCKER_PASS
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- export REPO=emcmongoose/mongoose-storage-driver-atmos
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH; fi`
+- docker build --build-arg MONGOOSE_VERSION=next -f docker/Dockerfile -t $REPO:$COMMIT .
+- docker tag $REPO:$COMMIT $REPO:$TAG
+- docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+- docker push $REPO
+- export REPO=emcmongoose/mongoose-storage-driver-atmos-service
+- export DRIVER_VERSION=$TAG
+- docker build --build-arg DRIVER_VERSION=$TAG -f docker/Dockerfile.storage-driver-service -t $REPO:$COMMIT .
+- docker tag $REPO:$COMMIT $REPO:$TAG
+- docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+- docker push $REPO
