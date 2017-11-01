@@ -1,6 +1,6 @@
 ARG DRIVER_VERSION
 
-FROM emcmongoose/mongoose-storage-driver-atmos:${DRIVER_VERSION}
+FROM emcmongoose/mongoose-storage-driver-atmos-service:${DRIVER_VERSION}
 
 EXPOSE 1099
 
