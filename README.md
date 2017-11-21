@@ -4,7 +4,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/emcmongoose/mongoose-storage-driver-atmos.svg)](https://hub.docker.com/r/emcmongoose/mongoose-storage-driver-atmos/)
 
 [Mongoose](https://github.com/emc-mongoose/mongoose-base)'s driver for
-EMC Atmos storage
+EMC Atmos cloud storage
 
 # Introduction
 
