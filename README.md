@@ -21,6 +21,7 @@ The storage driver extends the Mongoose's [Abstract HTTP Storage Driver](https:/
 * Item types:
     * `data`
     * `token`
+* Automatic subtenant creation on demand
 * Data item operation types:
     * `create`
     * `read`
