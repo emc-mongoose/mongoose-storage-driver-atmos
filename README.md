@@ -1,16 +1,14 @@
-[![master](https://img.shields.io/travis/emc-mongoose/mongoose-storage-driver-atmos/master.svg)](https://travis-ci.org/emc-mongoose/mongoose-storage-driver-atmos)
-[![downloads](https://img.shields.io/github/downloads/emc-mongoose/mongoose-storage-driver-atmos/total.svg)](https://github.com/emc-mongoose/mongoose-storage-driver-atmos/releases)
-[![release](https://img.shields.io/github/release/emc-mongoose/mongoose-storage-driver-atmos.svg)]()
+[![Gitter chat](https://badges.gitter.im/emc-mongoose.png)](https://gitter.im/emc-mongoose)
+[![Issue Tracker](https://img.shields.io/badge/Issue-Tracker-red.svg)](https://mongoose-issues.atlassian.net/projects/GOOSE)
+[![CI status](https://gitlab.com/emc-mongoose/mongoose-storage-driver-atmos/badges/master/pipeline.svg)](https://gitlab.com/emc-mongoose/mongoose-storage-driver-atmos/commits/master)
+[![Tag](https://img.shields.io/github/tag/emc-mongoose/mongoose-storage-driver-atmos.svg)](https://github.com/emc-mongoose/mongoose-storage-driver-atmos/tags)
+[![Maven metadata URL](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/com/github/emc-mongoose/mongoose-storage-driver-atmos/maven-metadata.xml.svg)](http://central.maven.org/maven2/com/github/emc-mongoose/mongoose-storage-driver-atmos)
+[![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/http/oss.sonatype.org/com.github.emc-mongoose/mongoose-storage-driver-atmos.svg)](http://oss.sonatype.org/com.github.emc-mongoose/mongoose-storage-driver-atmos)
 [![Docker Pulls](https://img.shields.io/docker/pulls/emcmongoose/mongoose-storage-driver-atmos.svg)](https://hub.docker.com/r/emcmongoose/mongoose-storage-driver-atmos/)
 
-[Mongoose](https://github.com/emc-mongoose/mongoose-base)'s driver for
-EMC Atmos cloud storage
+# Atmos Storage Driver
 
-# Introduction
-
-The storage driver extends the Mongoose's [Abstract HTTP Storage Driver](https://github.com/emc-mongoose/mongoose-base/wiki/v3.6-Extensions#231-http-storage-driver)
-
-# Features
+## 1. Features
 
 * API version: ?
 * Authentification:
@@ -19,8 +17,8 @@ The storage driver extends the Mongoose's [Abstract HTTP Storage Driver](https:/
 * Filesystem access
 * SSL/TLS
 * Item types:
-    * `data`
-    * `token`
+    * `data` (--> "object")
+    * `token` (-> "subtenant")
 * Automatic subtenant creation on demand
 * Data item operation types:
     * `create`
@@ -41,87 +39,20 @@ The storage driver extends the Mongoose's [Abstract HTTP Storage Driver](https:/
     * `delete`
     * `noop`
 
-# Usage
-
-Latest stable pre-built jar file is available at:
-https://github.com/emc-mongoose/mongoose-storage-driver-atmos/releases/download/latest/mongoose-storage-driver-atmos.jar
-This jar file may be downloaded manually and placed into the `ext`
-directory of Mongoose to be automatically loaded into the runtime.
+## 2. Usage
 
 ```bash
-java -jar mongoose-<VERSION>/mongoose.jar \
+java -jar mongoose-<VERSION>.jar \
     --storage-driver-type=atmos \
     ...
 ```
 
-## Notes
+### 2.1. Configuration Reference
+
+| Name                                           | Type         | Default Value    | Description                                      |
+|:-----------------------------------------------|:-------------|:-----------------|:-------------------------------------------------|
+| storage-net-http-fsAccess                      | Flag | false | Specifies whether filesystem access is enabled or not
+
+### 2.2. Notes
 
 * To specify a subtenant use the `storage-auth-token` configuration option
-
-## Docker
-
-### Standalone
-
-```bash
-docker run \
-    --network host \
-    --entrypoint mongoose \
-    emcmongoose/mongoose-storage-driver-atmos \
-    -jar /opt/mongoose/mongoose.jar \
-    --storage-type=atmos \
-    ...
-```
-
-### Distributed
-
-#### Drivers
-
-```bash
-docker run \
-    --network host \
-    --expose 1099 \
-    emcmongoose/mongoose-storage-driver-service-atmos
-```
-
-#### Controller
-
-```bash
-docker run \
-    --network host \
-    --entrypoint mongoose \
-    emcmongoose/mongoose-base \
-    -jar /opt/mongoose/mongoose.jar \
-    --storage-driver-remote \
-    --storage-driver-addrs=<ADDR1,ADDR2,...> \
-    --storage-driver-type=atmos \
-    ...
-```
-
-## Advanced
-
-### Sources
-
-```bash
-git clone https://github.com/emc-mongoose/mongoose-storage-driver-atmos.git
-cd mongoose-storage-driver-atmos
-```
-
-### Test
-
-```
-./gradlew clean test
-```
-
-### Build
-
-```bash
-
-./gradlew clean jar
-```
-
-### Embedding
-
-```groovy
-compile group: 'com.github.emc-mongoose', name: 'mongoose-storage-driver-atmos', version: '<VERSION>'
-```
-
