@@ -12,7 +12,7 @@ FROM emcmongoose/mongoose-storage-driver-http:${BASE_DRIVER_VERSION}
 ARG BASE_VERSION
 ARG VERSION
 COPY --from=0 /build/libs/mongoose-storage-driver-atmos-${VERSION}.jar /tmp/
-ADD ci/docker/entrypoint_storage_driver_swift.sh /opt/mongoose/entrypoint_storage_driver_atmos.sh
+ADD ci/docker/entrypoint_storage_driver_atmos.sh /opt/mongoose/entrypoint_storage_driver_atmos.sh
 RUN mv -f /tmp/mongoose-storage-driver-atmos-*.jar $HOME/.mongoose/${BASE_VERSION}/ext/; \
     chmod +x /opt/mongoose/entrypoint_storage_driver_atmos.sh
 ENTRYPOINT ["/opt/mongoose/entrypoint_storage_driver_atmos.sh"]
